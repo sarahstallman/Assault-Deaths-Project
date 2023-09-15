@@ -1,0 +1,411 @@
+---
+title: "Effects of Age and Gender on Assault Death Rates in Pima County vs Maricopa County"
+output: html_document
+date: "2022-12-1"
+---
+```{r}
+#create data for all deaths in Pima county by age group
+pimadeath<-c(1365,288,142,194,726,1206,2740,4636,9753,15855,23393,37072,40345)
+#define age groups
+#*(age is in ranges <1 , 1-4, 5-9, 10-14, 15-19,20-24,
+# 25-34,35-44, 45-54, 55-64, 65-74, 75-84, 85+)
+x<-c(0,5,10,15,20,25,35,45,55,65,75,85,95)
+#Plot Total Deaths in Pima by age
+plot(x,pimadeath,
+     xlab="Age of Death",
+     ylab="Total Deaths",
+     main = "Deaths in Pima County by age from 1999-2015",
+     xlim=c(0,100),
+     type = "l")
+```
+
+
+```{r}
+#Create new data for Total deaths by age group as a percent of the total deaths
+pertotal<-(100*pimadeath/sum(pimadeath))
+#Plot total deaths per age group in pima county as a percent of the total deaths
+plot(x,pertotal,
+     main="% of Total Deaths in Pima County by Age",
+     xlab="Age",
+     ylab="Percent",
+     xlim=c(0,100),
+     ylim = c(0,40))
+```
+
+```{r}
+#Create data Total deaths for males by age group
+mtotal<-c(741,159,74,118,515,917,1896,2991,6170,9658,13397,18873,15676)
+pmtotal<-c(100*mtotal/sum(mtotal))
+#Create Data for total deaths for females by age group
+ftotal<-c(624,129,68,76,211,289,844,1645,3583,6197,9996,18199,24669)
+pftotal<-c(100*ftotal/sum(ftotal))
+#Add the female and male totals to the graph
+par(new=TRUE)
+plot(x,pmtotal,
+     xlab="Age",
+     ylab="Percent",
+     xlim=c(0,100),
+     ylim=c(0,40),
+     type="l",
+     col="blue")
+par(new=TRUE)
+plot(x,pftotal,
+     xlab="Age",
+     ylab="Percent",
+     xlim=c(0,100),
+     ylim=c(0,40),
+     type="l",
+     col="red")
+legend("topleft",
+       c("all","males","females"),
+       fill =c("black","blue","red"))
+```
+
+```{r}
+#look at assault as the cause of death
+assault<-c(10,24,0,0,140,216,273,202,132,80,31,23,0)
+plot(x,assault)
+passault<-c(100*assault/sum(assault))
+plot(x,passault,
+     xlab="Age",
+     ylab="Percent",
+     xlim=c(0,100),
+     ylim=c(0,40),
+     type="l",
+     col="blue")
+par(new=TRUE)
+plot(x,pertotal,
+     main="All Deaths & Assault Deaths in Pima 1999-2015",
+     xlab="Age",
+     ylab="Percent",
+     xlim=c(0,100),
+     ylim=c(0,40),
+     type="l",
+     col="red")
+legend("topleft",
+       c("Assault","All Deaths"),
+       fill = c("blue","red"),
+       cex=0.8)
+```
+
+```{r}
+#Look at likelihood of death by assault if male vs female
+#Assault deaths of males and females
+amale<-c(10,12,0,0,121,193,241,170,99,59,20,13,0)
+afemale<-c(0,12,0,0,19,23,32,32,33,21,11,10,0)
+massault<-c(100*amale/sum(assault))
+fassault<-c(100*afemale/sum(assault))
+#Plot male vs female assault deaths
+plot(x,massault,
+     xlab="Age",
+     ylab="Percent",
+     xlim=c(0,100),
+     ylim=c(0,35),
+     type="l",
+     col="blue")
+par(new=TRUE)
+plot(x,fassault,
+     main="% of Deaths by assault in Pima",
+     xlab="Age",
+     ylab="Percent",
+     xlim=c(0,100),
+     ylim=c(0,35),
+     type="l",
+     col="red")
+legend("topleft",
+       c("Males","Females"),
+       fill = c("blue","red"),
+       cex=0.8)
+```
+
+```{r}
+#make a sample of the ages when an individual
+#died from any cause in pima county (Since data was in age ranges
+#we need to make a sample of the possible ages)
+bages<-sample(c(0:1),1365,replace=TRUE)
+bbages<-sample(c(1:4),288,replace=TRUE)
+bcages<-sample(c(5:9),142,replace=TRUE)
+bdages<-sample(c(10:14),194,replace=TRUE)
+beages<-sample(c(15:19),726,replace=TRUE)
+bfages<-sample(c(20:24),1206,replace=TRUE)
+bgages<-sample(c(25:34),2740,replace=TRUE)
+bhages<-sample(c(35:44),4636,replace=TRUE)
+biages<-sample(c(45:54),9753,replace=TRUE)
+bjages<-sample(c(55:64),15855,replace=TRUE)
+bkages<-sample(c(65:74),23393,replace=TRUE)
+blages<-sample(c(75:84),37072,replace=TRUE)
+bmages<-sample(c(85:100),40345,replace=TRUE)
+allages<-c(bages,bbages,bcages,bdages,beages,bfages,bgages,bhages,biages,bjages,bkages,blages,bmages)
+#look at 5 number summary for all deaths in pima county
+summary(allages)
+```
+
+```{r}
+#make a sample of the ages when an individual died of an assault
+# in Pima County (Since data was in age ranges
+# we need to make a sample of the possible ages)
+aages<-sample(c(0:1),10,replace=TRUE)
+abages<-sample(c(15:19),140,replace=TRUE)
+acages<-sample(c(20:24),216,replace=TRUE)
+adages<-sample(c(25:34),273,replace=TRUE)
+aeages<-sample(c(35:44),202,replace=TRUE)
+afages<-sample(c(45:54),132,replace=TRUE)
+agages<-sample(c(55:64),80,replace=TRUE)
+ahages<-sample(c(65:74),31,replace=TRUE)
+aiages<-sample(c(75:84),23,replace=TRUE)
+assaultages<-c(aages,abages,acages,adages,aeages,afages,agages,ahages,aiages)
+#look at 5 number summary and plots for assaults in Pima
+summary(assaultages)
+```
+
+```{r}
+#look at differences between all deaths and death by assault
+boxplot(assaultages,allages,
+        main=c("Deaths in Pima County 1999-2015"),
+        ylab=c("Age"),
+        names=c("Assault","All Deaths"))
+hist(allages,
+     main=c("All deaths in Pima County 1999-2015"),
+     xlab=c("Age"),)
+hist(assaultages,
+     main=c("Assault deaths in Pima County 1999-2015"),
+     xlab=c("Age"))
+#Plot Q - Q plot of deaths
+#This is not normal distribution
+qqplot(sort(allages),sort(assaultages),
+       xlim=c(0,100),
+       ylim=c(0,100),
+       col="black",
+       xlab = c("All Deaths"),
+       ylab = c("Assault Deaths"),
+       main=c("Q - Q plot of All vs Assault Deaths in Pima"))
+abline(a=0,b=1)
+q<-c(0.25,0.50,0.75)
+points(quantile(allages,q),quantile(assaultages,q),col=rainbow(3),pch=19)
+legend("topleft",
+       c("1st quantile","2nd quantile", "3rd quantile"),
+       fill = c(rainbow(3)),
+       cex=0.8)
+```
+
+```{r}
+#Look at Maricopa County
+#create data for all deaths in Maricopa county by age group
+mardeath<-c(6350,1276,626,760,2828,4672,10266,16513,32562,52340,76485,119844,131957)
+#define age groups
+#*(age is in ranges <1 , 1-4, 5-9, 10-14, 15-19,20-24,
+# 25-34,35-44, 45-54, 55-64, 65-74, 75-84, 85+)
+x<-c(0,5,10,15,20,25,35,45,55,65,75,85,95)
+#Plot Total Deaths in Maricopa by age
+plot(x,mardeath,
+     xlab="Age of Death",
+     ylab="Total Deaths",
+     main = "Deaths in Maricopa County by age from 1999-2015",
+     xlim=c(0,100),
+     type = "l")
+```
+
+```{r}
+#Create new data for Total deaths by age group as a percent of the total deaths
+mpertotal<-(100*mardeath/sum(mardeath))
+#Plot total deaths per age group in Maricopa county as a percent of the total deaths
+plot(x,mpertotal,
+     main="% of Total Deaths in Maricopa County by Age",
+     xlab="Age",
+     ylab="Percent",
+     xlim=c(0,100),
+     ylim = c(0,40))
+```
+
+```{r}
+#Create data Total deaths for males by age group
+mmtotal<-c(3542,715,351,462,2089,3636,7426,10744,20650,31416,43473,60818,50196)
+mpmtotal<-c(100*mmtotal/sum(mmtotal))
+#Create Data for total deaths for females by age group
+mftotal<-c(2808,561,275,298,739,1036,2840,5769,11912,20924,33012,59026,81761)
+mpftotal<-c(100*mftotal/sum(mftotal))
+#Add the female and male totals to the graph
+par(new=TRUE)
+plot(x,mpmtotal,
+     xlab="Age",
+     ylab="Percent",
+     xlim=c(0,100),
+     ylim=c(0,40),
+     type="l",
+     col="blue")
+par(new=TRUE)
+plot(x,mpftotal,
+     xlab="Age",
+     ylab="Percent",
+     xlim=c(0,100),
+     ylim=c(0,40),
+     type="l",
+     col="red")
+legend("topleft",
+       c("all","males","females"),
+       fill =c("black","blue","red"))
+```
+
+```{r}
+#look at assault as the cause of death
+marassault<-c(80,91,29,49,537,913,1431,839,550,237,94,70,58)
+plot(x,marassault)
+marpassault<-c(100*marassault/sum(marassault))
+plot(x,marpassault,
+     xlab="Age",
+     ylab="Percent",
+     xlim=c(0,100),
+     ylim=c(0,40),
+     type="l",
+     col="blue")
+par(new=TRUE)
+plot(x,mpertotal,
+     main="All Deaths & Assault Deaths in Maricopa 1999-2015",
+     xlab="Age",
+     ylab="Percent",
+     xlim=c(0,100),
+     ylim=c(0,40),
+     type="l",
+     col="red")
+legend("topleft",
+       c("Assault","All Deaths"),
+       fill = c("blue","red"),
+       cex=0.8)
+```
+
+```{r}
+#Look at likelihood of death by assault if male vs female
+#Assault deaths of males and females
+mamale<-c(46,47,19,34,448,792,1239,672,416,166,65,33,44)
+mafemale<-c(34,44,10,15,89,121,192,167,134,71,29,37,14)
+mmassault<-c(100*mamale/sum(marassault))
+mfassault<-c(100*mafemale/sum(marassault))
+#Plot male vs female assault deaths
+plot(x,mmassault,
+     xlab="Age",
+     ylab="Percent",
+     xlim=c(0,100),
+     ylim=c(0,35),
+     type="l",
+     col="blue")
+par(new=TRUE)
+plot(x,mfassault,
+     main="% of Deaths by Assault in Maricopa",
+     xlab="Age",
+     ylab="Percent",
+     xlim=c(0,100),
+     ylim=c(0,35),
+     type="l",
+     col="red")
+legend("topleft",
+       c("Males","Females"),
+       fill = c("blue","red"),
+       cex=0.8)
+```
+
+```{r}
+#make a sample of the ages when an individual
+#died from any cause in Maricopa county (Since data was in age ranges
+#we need to make a sample of the possible ages)
+mbages<-sample(c(0:1),6350,replace=TRUE)
+mbbages<-sample(c(1:4),1276,replace=TRUE)
+mbcages<-sample(c(5:9),626,replace=TRUE)
+mbdages<-sample(c(10:14),760,replace=TRUE)
+mbeages<-sample(c(15:19),2828,replace=TRUE)
+mbfages<-sample(c(20:24),4672,replace=TRUE)
+mbgages<-sample(c(25:34),10266,replace=TRUE)
+mbhages<-sample(c(35:44),16513,replace=TRUE)
+mbiages<-sample(c(45:54),32562,replace=TRUE)
+mbjages<-sample(c(55:64),52340,replace=TRUE)
+mbkages<-sample(c(65:74),76485,replace=TRUE)
+mblages<-sample(c(75:84),119844,replace=TRUE)
+mbmages<-sample(c(85:100),131957,replace=TRUE)
+mallages<-c(mbages,mbbages,mbcages,mbdages,mbeages,mbfages,mbgages,mbhages,mbiages,mbjages,mbkages,mblages,mbmages)
+#look at 5 number summary for all deaths in pima county
+summary(mallages)
+```
+
+```{r}
+#make a sample of the ages when an individual died of an assault
+# in Maricopa County (Since data was in age ranges
+# we need to make a sample of the possible ages)
+maages<-sample(c(0:1),80,replace=TRUE)
+mabages<-sample(c(1:4),91,replace=TRUE)
+macages<-sample(c(5:9),29,replace=TRUE)
+madages<-sample(c(10:14),49,replace=TRUE)
+maeages<-sample(c(15:19),537,replace=TRUE)
+mafages<-sample(c(20:24),913,replace=TRUE)
+magages<-sample(c(25:34),1431,replace=TRUE)
+mahages<-sample(c(35:44),839,replace=TRUE)
+maiages<-sample(c(45:54),550,replace=TRUE)
+majages<-sample(c(55:64),237,replace=TRUE)
+makages<-sample(c(65:74),94,replace=TRUE)
+malages<-sample(c(75:84),70,replace=TRUE)
+mamages<-sample(c(85:100),58,replace=TRUE)
+massaultages<-c(maages,mabages,macages,madages,maeages,mafages,magages,mahages,maiages,majages,makages,malages,makages)
+#look at 5 number summary and plots for assaults in Maricopa County
+summary(massaultages)
+```
+
+```{r}
+#look at differences between all deaths and death by assault
+boxplot(massaultages,mallages,
+        main=c("Deaths in Maricopa County 1999-2015"),
+        ylab=c("Age"),
+        names=c("Assault","All Deaths"))
+hist(mallages,
+     main=c("All deaths in Maricopa County 1999-2015"),
+     xlab=c("Age"),)
+hist(massaultages,
+     main=c("Assault deaths in Maricopa County 1999-2015"),
+     xlab=c("Age"))
+```
+```{r}
+#Plot Q - Q plot of deaths
+#This is not normal distribution
+qqplot(sort(mallages),sort(massaultages),
+       xlim=c(0,100),
+       ylim=c(0,100),
+       col="black",
+       xlab = c("All Deaths"),
+       ylab = c("Assault Deaths"),
+       main=c("Q - Q plot of All vs Assault Deaths in Maricopa"))
+abline(a=0,b=1)
+q<-c(0.25,0.50,0.75)
+points(quantile(mallages,q),quantile(massaultages,q),col=rainbow(3),pch=19)
+legend("topleft",
+       c("1st quantile","2nd quantile", "3rd quantile"),
+       fill = c(rainbow(3)),
+       cex=0.8)
+#The two counties look similar and have simliar means. Let's
+#look at the deaths by assault between the two counties
+pima=assault/pimadeath*100
+mar=marassault/mardeath*100
+qqplot(sort(pima),sort(mar),
+       xlim=c(0,30),
+       ylim=c(0,30),
+       col="black",
+       xlab = c("Pima Assault Deaths"),
+       ylab = c("Maricopa Assault Deaths"),
+       main=c("Q - Q plot of Assault Deaths in Pima vs Maricopa"))
+abline(a=0,b=1)
+q<-c(0.25,0.50,0.75)
+points(quantile(pima,q),quantile(mar,q),col=rainbow(3),pch=19)
+legend("bottomright",
+       c("1st quantile","2nd quantile", "3rd quantile"),
+       fill = c(rainbow(3)),
+       cex=0.8)
+```
+
+
+```{r}
+
+#Run a t-test to see if the difference of the means of the percentage of
+#people in each age group who die due to assault is statistically significant
+#in Pima and Maricopa county Arizona.
+#H0: There is no difference in the means of the percent of people who die from assault (as opposed to all causes of death) in Pima county and Maricopa county.
+#H1: The percent of people who die from assault is greater in Maricopa county than in Pima county.
+t.test(mar,pima,alternative=c("greater"),paired=TRUE)
+
+```
+
